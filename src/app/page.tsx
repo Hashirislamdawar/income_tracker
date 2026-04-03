@@ -1,4 +1,3 @@
-import React from "react";
 import BudgetPlanner from "@/components/budget/BudgetPlanner";
 import { Waves } from "@/components/ui/waves";
 
