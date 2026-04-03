@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Plus, 
-  Minus, 
-  Trash2, 
-  PieChart as PieChartIcon, 
+import {
+  Plus,
+  Minus,
+  Trash2,
+  PieChart as PieChartIcon,
   Target,
   ArrowUpRight,
   ArrowDownRight,
@@ -20,7 +20,7 @@ const CAT_COLORS: Record<string, string> = {
   Health: '#f43f5e', // Rose
   Entertainment: '#8b5cf6', // Violet
   Shopping: '#ec4899', // Pink
-  Salary: '#10b981', 
+  Salary: '#10b981',
   Other: '#64748b' // Slate
 };
 
@@ -49,7 +49,7 @@ export default function BudgetPlanner() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
-  
+
   // Mounted state for hydration mismatch avoidance
   const [isMounted, setIsMounted] = useState(false);
 
@@ -80,7 +80,7 @@ export default function BudgetPlanner() {
   if (!isMounted) return <div className="min-h-screen bg-slate-950 flex items-center justify-center">Loading...</div>;
 
   const fmt = (n: number) => '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  
+
   const getMonthKey = (d: Date) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
   const monthKey = getMonthKey(currentDate);
   const monthTxs = transactions.filter(t => t.date.startsWith(monthKey));
@@ -99,11 +99,11 @@ export default function BudgetPlanner() {
   const addTransaction = () => {
     const amount = parseFloat(txAmount);
     if (!amount || amount <= 0) return alert('Please enter a valid amount greater than 0.');
-    
+
     // Default the description to the category name if they left it blank
     const finalDesc = txDesc.trim() || txCat;
     const finalDate = txDate || new Date().toISOString().split('T')[0];
-    
+
     setTransactions(prev => [{ id: Date.now(), desc: finalDesc, amount, cat: txCat, type: txType, date: finalDate }, ...prev]);
     setTxDesc('');
     setTxAmount('');
@@ -127,7 +127,7 @@ export default function BudgetPlanner() {
     const num = parseFloat(val) || 0;
     setGoals(prev => prev.map(g => g.id === id ? { ...g, saved: Math.max(0, Math.min(g.target, num)) } : g));
   };
-  
+
   const deleteGoal = (id: number) => {
     setGoals(prev => prev.filter(g => g.id !== id));
   };
@@ -143,7 +143,7 @@ export default function BudgetPlanner() {
           <p className="text-zinc-400 text-sm mt-1">Track income, spending & goals dynamically.</p>
         </div>
         <div className="flex items-center gap-4 mt-4 md:mt-0 bg-zinc-900 p-1.5 rounded-full border border-zinc-800 shadow-inner">
-          <button 
+          <button
             onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)))}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white"
           >
@@ -152,7 +152,7 @@ export default function BudgetPlanner() {
           <span className="font-semibold text-zinc-200 min-w-[120px] text-center">
             {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
           </span>
-          <button 
+          <button
             onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)))}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white"
           >
@@ -163,23 +163,23 @@ export default function BudgetPlanner() {
 
       {/* Summaries */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <SummaryCard 
-          title="Income" 
-          amount={fmt(income)} 
-          sub={`${monthTxs.filter(t=>t.type==='income').length} transactions`}
+        <SummaryCard
+          title="Income"
+          amount={fmt(income)}
+          sub={`${monthTxs.filter(t => t.type === 'income').length} transactions`}
           icon={<ArrowUpRight className="text-emerald-400" size={24} />}
           glowColor="rgba(16, 185, 129, 0.15)"
         />
-        <SummaryCard 
-          title="Expenses" 
-          amount={fmt(expenses)} 
-          sub={`${monthTxs.filter(t=>t.type==='expense').length} transactions`}
+        <SummaryCard
+          title="Expenses"
+          amount={fmt(expenses)}
+          sub={`${monthTxs.filter(t => t.type === 'expense').length} transactions`}
           icon={<ArrowDownRight className="text-rose-400" size={24} />}
           glowColor="rgba(244, 63, 94, 0.15)"
         />
-        <SummaryCard 
-          title="Balance" 
-          amount={fmt(balance)} 
+        <SummaryCard
+          title="Balance"
+          amount={fmt(balance)}
           sub={balance >= 0 ? "You're on track!" : "Spending exceeds income"}
           icon={<Wallet className="text-cyan-400" size={24} />}
           glowColor="rgba(34, 211, 238, 0.15)"
@@ -193,12 +193,12 @@ export default function BudgetPlanner() {
           {/* Add Transaction */}
           <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-5 backdrop-blur-md">
             <h3 className="text-lg font-semibold mb-4 text-zinc-100">Add Transaction</h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Description</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={txDesc}
                   onChange={e => setTxDesc(e.target.value)}
                   placeholder="e.g. Groceries"
@@ -207,11 +207,11 @@ export default function BudgetPlanner() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Amount ($)</label>
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   value={txAmount}
                   onChange={e => setTxAmount(e.target.value)}
-                  placeholder="0.00" 
+                  placeholder="0.00"
                   min="0" step="0.01"
                   className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500 transition-colors"
                 />
@@ -222,14 +222,14 @@ export default function BudgetPlanner() {
               <div className="flex flex-col gap-1.5 col-span-2 lg:col-span-1">
                 <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Type</label>
                 <div className="flex bg-zinc-950 rounded-lg p-1 border border-zinc-800">
-                  <button 
+                  <button
                     type="button"
                     onClick={() => { setTxType('income'); setTxCat('Salary'); }}
                     className={`flex-1 py-2 text-xs font-semibold rounded-md transition-all ${txType === 'income' ? 'bg-emerald-500 text-zinc-950 shadow-sm' : 'text-zinc-400 hover:text-zinc-200'}`}
                   >
                     Income
                   </button>
-                  <button 
+                  <button
                     type="button"
                     onClick={() => { setTxType('expense'); setTxCat('Food'); }}
                     className={`flex-1 py-2 text-xs font-semibold rounded-md transition-all ${txType === 'expense' ? 'bg-rose-500 text-zinc-950 shadow-sm' : 'text-zinc-400 hover:text-zinc-200'}`}
@@ -240,7 +240,7 @@ export default function BudgetPlanner() {
               </div>
               <div className="flex flex-col gap-1.5 col-span-1">
                 <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Category</label>
-                <select 
+                <select
                   value={txCat}
                   onChange={e => setTxCat(e.target.value)}
                   className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500 appearance-none"
@@ -259,24 +259,23 @@ export default function BudgetPlanner() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Date</label>
-                <input 
-                  type="date" 
+                <input
+                  type="date"
                   value={txDate}
                   onChange={e => setTxDate(e.target.value)}
                   className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-zinc-400 focus:outline-none focus:border-emerald-500 block w-full appearance-none"
                 />
               </div>
             </div>
-            
-            <motion.button 
+
+            <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
               onClick={addTransaction}
-              className={`w-full font-bold py-2.5 rounded-lg transition-shadow text-zinc-950 ${
-                txType === 'income' 
+              className={`w-full font-bold py-2.5 rounded-lg transition-shadow text-zinc-950 ${txType === 'income'
                   ? 'bg-gradient-to-r from-emerald-500 to-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)]'
                   : 'bg-gradient-to-r from-rose-500 to-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.3)] hover:shadow-[0_0_25px_rgba(244,63,94,0.5)]'
-              }`}
+                }`}
             >
               Add {txType === 'income' ? 'Income' : 'Expense'}
             </motion.button>
@@ -290,7 +289,7 @@ export default function BudgetPlanner() {
             <div className="bg-zinc-900/30 border border-zinc-800/80 rounded-2xl p-2 h-[320px] overflow-y-auto custom-scrollbar">
               <AnimatePresence mode="popLayout">
                 {monthTxs.length === 0 ? (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     className="h-full flex flex-col items-center justify-center text-zinc-500 text-sm py-10"
                   >
@@ -311,7 +310,7 @@ export default function BudgetPlanner() {
                       className="group flex items-center justify-between p-3 mb-2 rounded-xl bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/80 transition-all"
                     >
                       <div className="flex items-center gap-3">
-                        <div 
+                        <div
                           className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
                           style={{ backgroundColor: `${CAT_COLORS[tx.cat]}20`, color: CAT_COLORS[tx.cat] }}
                         >
@@ -326,7 +325,7 @@ export default function BudgetPlanner() {
                         <span className={`font-mono font-medium ${tx.type === 'income' ? 'text-emerald-400' : 'text-zinc-300'}`}>
                           {tx.type === 'income' ? '+' : '-'}{fmt(tx.amount)}
                         </span>
-                        <button 
+                        <button
                           onClick={() => deleteTransaction(tx.id)}
                           className="text-zinc-600 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-all p-1"
                           aria-label="Delete"
@@ -351,14 +350,14 @@ export default function BudgetPlanner() {
               <PieChartIcon size={16} className="text-cyan-400" />
               Spending Breakdown
             </h3>
-            
+
             <div className="relative w-36 h-36 mx-auto mb-6">
               <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90 drop-shadow-lg">
                 <circle cx="50" cy="50" r="38" fill="none" stroke="#27272a" strokeWidth="12" />
                 {totalDonutPaths(pieEntries, expenses)}
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="font-bold text-xl text-zinc-100">{expenses === 0 ? "–" : fmt(expenses).replace('.00','')}</span>
+                <span className="font-bold text-xl text-zinc-100">{expenses === 0 ? "–" : fmt(expenses).replace('.00', '')}</span>
                 <span className="text-[10px] uppercase tracking-wider text-zinc-500">Spent</span>
               </div>
             </div>
@@ -373,7 +372,7 @@ export default function BudgetPlanner() {
                       <div className="w-2 h-2 rounded-full shadow-[0_0_5px_currentColor]" style={{ backgroundColor: CAT_COLORS[cat] || '#94a3b8', color: CAT_COLORS[cat] || '#94a3b8' }}></div>
                       <span className="text-zinc-300">{CAT_EMOJI[cat]} {cat}</span>
                     </div>
-                    <span className="text-zinc-500 font-mono">{Math.round((amt/expenses)*100)}%</span>
+                    <span className="text-zinc-500 font-mono">{Math.round((amt / expenses) * 100)}%</span>
                   </div>
                 ))
               )}
@@ -387,7 +386,7 @@ export default function BudgetPlanner() {
               <Target size={16} className="text-fuchsia-400" />
               Savings Goals
             </h3>
-            
+
             <div className="flex flex-col gap-4 mb-4 mt-2 max-h-[180px] overflow-y-auto custom-scrollbar pr-1">
               {goals.length === 0 ? (
                 <div className="text-xs text-center text-zinc-500 my-4">No goals yet. Add one below!</div>
@@ -398,9 +397,9 @@ export default function BudgetPlanner() {
                     const colors = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ec4899'];
                     const col = colors[i % colors.length];
                     return (
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-                        key={g.id} 
+                        key={g.id}
                         className="group relative bg-zinc-950/50 border border-zinc-800 p-3 rounded-xl"
                       >
                         <div className="flex justify-between items-center mb-2">
@@ -413,19 +412,19 @@ export default function BudgetPlanner() {
                           </div>
                         </div>
                         <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden mb-2">
-                          <motion.div 
-                            initial={{ width: 0 }} 
-                            animate={{ width: `${pct}%` }} 
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${pct}%` }}
                             transition={{ duration: 1, ease: 'easeOut' }}
-                            className="h-full rounded-full shadow-[0_0_8px_currentColor]" 
+                            className="h-full rounded-full shadow-[0_0_8px_currentColor]"
                             style={{ backgroundColor: col, color: col }}
                           />
                         </div>
                         <div className="flex justify-between items-center mt-1">
                           <span className="text-[10px] font-medium" style={{ color: col }}>{pct}%</span>
-                          <input 
-                            type="number" 
-                            value={g.saved || ''} 
+                          <input
+                            type="number"
+                            value={g.saved || ''}
                             onChange={e => updateGoalSaved(g.id, e.target.value)}
                             className="w-16 bg-zinc-900 border border-zinc-800 rounded px-1.5 py-0.5 text-[10px] text-right text-zinc-300 focus:outline-none focus:border-zinc-600"
                             placeholder="0"
@@ -439,15 +438,15 @@ export default function BudgetPlanner() {
             </div>
 
             <div className="flex gap-2">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={goalName}
                 onChange={e => setGoalName(e.target.value)}
                 placeholder="Name & amount (Trip $500)"
                 className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-fuchsia-500"
                 onKeyDown={e => e.key === 'Enter' && addGoal()}
               />
-              <button 
+              <button
                 onClick={addGoal}
                 className="bg-zinc-800 text-zinc-200 p-2 rounded-lg hover:bg-zinc-700 transition-colors"
                 aria-label="Add Goal"
@@ -458,8 +457,9 @@ export default function BudgetPlanner() {
           </div>
         </div>
       </div>
-      
-      <style dangerouslySetInnerHTML={{__html: `
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
@@ -473,7 +473,7 @@ export default function BudgetPlanner() {
 
 function SummaryCard({ title, amount, sub, icon, glowColor, isHighlight = false }: any) {
   return (
-    <motion.div 
+    <motion.div
       whileHover={{ y: -4, boxShadow: "0 10px 25px -5px " + glowColor }}
       className={"relative overflow-hidden p-5 rounded-2xl border " + (isHighlight ? 'bg-gradient-to-br from-zinc-900 to-zinc-950 border-cyan-900/50' : 'bg-zinc-900/50 border-zinc-800') + " backdrop-blur-md"}
     >
@@ -495,19 +495,19 @@ function totalDonutPaths(entries: [string, number][], total: number) {
   const R = 38;
   const circ = 2 * Math.PI * R;
   let offset = 0;
-  
+
   return entries.map(([cat, amt]) => {
     const dash = (amt / total) * circ;
     const col = CAT_COLORS[cat] || '#94a3b8';
     const path = (
-      <circle 
+      <circle
         key={cat}
-        cx="50" cy="50" r={R} 
-        fill="none" 
-        stroke={col} 
-        strokeWidth="12" 
-        strokeDasharray={dash + " " + (circ - dash)} 
-        strokeDashoffset={-offset} 
+        cx="50" cy="50" r={R}
+        fill="none"
+        stroke={col}
+        strokeWidth="12"
+        strokeDasharray={dash + " " + (circ - dash)}
+        strokeDashoffset={-offset}
         strokeLinecap="round"
         className="drop-shadow-[0_0_4px_currentColor]"
         style={{ color: col, transition: 'all 1s ease' }}
