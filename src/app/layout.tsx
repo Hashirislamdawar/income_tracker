@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "hashir Islam",
+  title: "Income Tracker",
   description: "Income Tracker",
 };
 
