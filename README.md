@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Adding Changes to GitHub
+
+Whenever you modify code locally and want to push your changes to your GitHub repository (and trigger the Jenkins pipeline), run these three commands in your terminal:
+
+```bash
+# 1. Stage all your modified files
+git add -A
+
+# 2. Commit the changes with a descriptive message
+git commit -m "Describe what you changed here"
+
+# 3. Push the changes to the 'main' branch on GitHub
+git push
+```
